@@ -1,6 +1,0 @@
-E:\Steam\steamapps\common\RimWorld\Mods\LessArbitrarySurgery\Source\LessArbitrarySurgery\obj\Debug\LessArbitrarySurgery.csprojAssemblyReference.cache
-E:\Steam\steamapps\common\RimWorld\Mods\LessArbitrarySurgery\Source\LessArbitrarySurgery\obj\Debug\LessArbitrarySurgery.csproj.CoreCompileInputs.cache
-E:\Steam\steamapps\common\RimWorld\Mods\LessArbitrarySurgery\1.1\Assemblies\LessArbitrarySurgery.dll
-E:\Steam\steamapps\common\RimWorld\Mods\LessArbitrarySurgery\1.1\Assemblies\LessArbitrarySurgery.pdb
-E:\Steam\steamapps\common\RimWorld\Mods\LessArbitrarySurgery\Source\LessArbitrarySurgery\obj\Debug\LessArbitrarySurgery.dll
-E:\Steam\steamapps\common\RimWorld\Mods\LessArbitrarySurgery\Source\LessArbitrarySurgery\obj\Debug\LessArbitrarySurgery.pdb
