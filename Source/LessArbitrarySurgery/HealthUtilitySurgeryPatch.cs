@@ -3,7 +3,7 @@ using System.Reflection.Emit;
 using HarmonyLib;
 using Verse;
 
-namespace LessArbitrarySurgery.Harmony;
+namespace LessArbitrarySurgery;
 
 [HarmonyPatch(typeof(HealthUtility), "GiveRandomSurgeryInjuries")]
 public static class HealthUtilitySurgeryPatch

@@ -5,7 +5,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace LessArbitrarySurgery.Harmony;
+namespace LessArbitrarySurgery;
 
 [HarmonyPatch(typeof(Recipe_Surgery), "CheckSurgeryFail")]
 public static class Recipe_SurgeryFailPatch

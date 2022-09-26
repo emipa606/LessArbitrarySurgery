@@ -17,16 +17,9 @@
       <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
       <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
     </li>
-    <li>
-      <packageId>UnlimitedHugs.HugsLib</packageId>
-      <displayName>HugsLib</displayName>
-      <steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl>
-      <downloadUrl>https://github.com/UnlimitedHugs/RimworldHugsLib</downloadUrl>
-    </li>
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>
-    <li>UnlimitedHugs.HugsLib</li>
   </loadAfter>
   <description>[img]https://i.imgur.com/buuPQel.png[/img]
     Update of Linqs mod
@@ -70,5 +63,6 @@ Compatible with Psychology, EPOE, A Dog Said, DE Surgeries, and Mechanite Augmen
 [*] Do not report errors by making a discussion-thread, I get no notification of that.
 [*] If you have the solution for a problem, please post it to the GitHub repository.
 [/list]
+
 </description>
 </ModMetaData>

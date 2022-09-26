@@ -1,5 +1,8 @@
 # Changelog for LessArbitrarySurgery
 
+1.3.2 - Removed legacy HugsLib requirement
+
+
 1.3.1 - Should now be impossible to kill pawns unless the surgery has a risk of killing in the first place. Thank you Trik for the detailed report and solution!
 
 
