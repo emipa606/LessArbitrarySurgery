@@ -5,6 +5,8 @@
     Update of Linqs mod
     https://steamcommunity.com/sharedfiles/filedetails/?id=1552455241
 
+- Removed legacy HugsLib requirement
+
 ![Image](https://i.imgur.com/pufA0kM.png)
 
 	

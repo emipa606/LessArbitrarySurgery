@@ -66,7 +66,8 @@ public static class Recipe_SurgeryFailPatch
                     Rand.Chance(__instance.recipe.deathOnFailedSurgeryChance - num))
                 {
                     //Failed surgery death chance is influenced by the surgery success chance.
-                    HealthUtility.GiveInjuriesOperationFailureCatastrophic(patient, part);
+
+                    HealthUtility.GiveRandomSurgeryInjuries(patient, 65, part);
                     if (!patient.Dead)
                     {
                         patient.Kill(null);
@@ -87,7 +88,7 @@ public static class Recipe_SurgeryFailPatch
                             "MessageMedicalOperationFailureRidiculous".Translate(surgeon.LabelShort,
                                 patient.LabelShort, surgeon.Named("SURGEON"), patient.Named("PATIENT")), patient,
                             MessageTypeDefOf.NegativeHealthEvent);
-                        HealthUtility.GiveInjuriesOperationFailureRidiculous(patient);
+                        HealthUtility.GiveRandomSurgeryInjuries(patient, 65, null);
                     }
                     else
                     {
@@ -95,7 +96,7 @@ public static class Recipe_SurgeryFailPatch
                             "MessageMedicalOperationFailureCatastrophic".Translate(surgeon.LabelShort,
                                 patient.LabelShort, surgeon.Named("SURGEON"), patient.Named("PATIENT")), patient,
                             MessageTypeDefOf.NegativeHealthEvent);
-                        HealthUtility.GiveInjuriesOperationFailureCatastrophic(patient, part);
+                        HealthUtility.GiveRandomSurgeryInjuries(patient, 65, part);
                     }
                 }
                 else

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using HarmonyLib;
 using Verse;
 
 namespace LessArbitrarySurgery;
@@ -8,6 +9,6 @@ public static class Main
 {
     static Main()
     {
-        new HarmonyLib.Harmony("Mlie.LessArbitrarySurgery").PatchAll(Assembly.GetExecutingAssembly());
+        new Harmony("Mlie.LessArbitrarySurgery").PatchAll(Assembly.GetExecutingAssembly());
     }
 }

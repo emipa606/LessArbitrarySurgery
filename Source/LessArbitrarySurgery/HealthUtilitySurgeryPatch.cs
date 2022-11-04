@@ -34,4 +34,10 @@ public static class HealthUtilitySurgeryPatch
             }
         }
     }
+
+    [HarmonyPrefix]
+    public static void UseRandomRangesForDamage(ref int totalDamage)
+    {
+        totalDamage = Rand.Range((int)(totalDamage * 0.5), totalDamage);
+    }
 }
