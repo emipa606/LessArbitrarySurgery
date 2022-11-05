@@ -10,10 +10,61 @@ namespace LessArbitrarySurgery;
 [HarmonyPatch(typeof(Recipe_Surgery), "CheckSurgeryFail")]
 public static class Recipe_SurgeryFailPatch
 {
+    private static readonly SimpleCurve MedicineMedicalPotencyToSurgeryChanceFactor = new SimpleCurve
+    {
+        new CurvePoint(0f, 0.7f),
+        new CurvePoint(1f, 1f),
+        new CurvePoint(2f, 1.3f)
+    };
+
+    private static float GetAverageMedicalPotency(List<Thing> ingredients, Bill bill)
+    {
+        ThingDef thingDef;
+        if (bill is Bill_Medical bill_Medical)
+        {
+            thingDef = bill_Medical.consumedInitialMedicineDef;
+        }
+        else
+        {
+            thingDef = null;
+        }
+
+        var num = 0;
+        var num2 = 0f;
+        if (thingDef != null)
+        {
+            num++;
+            num2 += thingDef.GetStatValueAbstract(StatDefOf.MedicalPotency);
+        }
+
+        foreach (var thing in ingredients)
+        {
+            if (thing is not Medicine medicine)
+            {
+                continue;
+            }
+
+            num += medicine.stackCount;
+            num2 += medicine.GetStatValue(StatDefOf.MedicalPotency) * medicine.stackCount;
+        }
+
+        if (num == 0)
+        {
+            return 1f;
+        }
+
+        return num2 / num;
+    }
+
     [HarmonyPrefix]
     public static bool CheckSurgeryFail(Recipe_Surgery __instance, ref bool __result, Pawn surgeon, Pawn patient,
         List<Thing> ingredients, BodyPartRecord part, Bill bill)
     {
+        if (__instance.recipe.surgeryOutcomeEffect == null)
+        {
+            return false;
+        }
+
         var num = 1f;
         if (!patient.RaceProps.IsMechanoid)
         {
@@ -25,10 +76,8 @@ public static class Recipe_SurgeryFailPatch
             num *= patient.CurrentBed().GetStatValue(StatDefOf.SurgerySuccessChanceFactor);
         }
 
-        num *= Traverse.Create(__instance).Field("MedicineMedicalPotencyToSurgeryChanceFactor")
-            .GetValue<SimpleCurve>().Evaluate(Traverse.Create(__instance)
-                .Method("GetAverageMedicalPotency", new[] { typeof(List<Thing>), typeof(Bill) })
-                .GetValue<float>(ingredients, bill));
+        num *= MedicineMedicalPotencyToSurgeryChanceFactor.Evaluate(GetAverageMedicalPotency(ingredients, bill));
+
         num *= __instance.recipe.surgerySuccessChanceFactor;
         if (surgeon.InspirationDef == InspirationDefOf.Inspired_Surgery && !patient.RaceProps.IsMechanoid)
         {
@@ -37,6 +86,7 @@ public static class Recipe_SurgeryFailPatch
         }
 
         num = Mathf.Min(num, 0.98f);
+
         if (!Rand.Chance(num)) // Failed check
         {
             if (Rand.Chance(num)) // Successful check
@@ -124,9 +174,10 @@ public static class Recipe_SurgeryFailPatch
 
             if (!patient.Dead)
             {
-                Traverse.Create(__instance)
-                    .Method("TryGainBotchedSurgeryThought", new[] { typeof(Pawn), typeof(Pawn) })
-                    .GetValue(patient, surgeon);
+                if (patient.RaceProps.Humanlike && patient.needs.mood != null)
+                {
+                    patient.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOf.BotchedMySurgery, surgeon);
+                }
             }
 
             __result = true;
@@ -141,9 +192,7 @@ public static class Recipe_SurgeryFailPatch
     {
         var num3 = Math.Min(Rand.RangeInclusive(10, 20),
             Mathf.RoundToInt(patient.health.hediffSet.GetPartHealth(part) - 3));
-        Traverse.Create(typeof(HealthUtility))
-            .Method("GiveRandomSurgeryInjuries", new[] { typeof(Pawn), typeof(int), typeof(BodyPartRecord) })
-            .GetValue(patient, num3, part);
+        HealthUtility.GiveRandomSurgeryInjuries(patient, num3, part);
     }
 
     public static void RecreateIngredient(Pawn surgeon, List<Thing> ingredients)
@@ -167,7 +216,6 @@ public static class Recipe_SurgeryFailPatch
         List<Thing> ingredients)
     {
         Hediff infection = null;
-        var removeBodyPart = AccessTools.TypeByName("Recipe_RemoveBodyPart");
         if (patient.health.immunity.DiseaseContractChanceFactor(HediffDefOf.WoundInfection, part) < 0.0001f)
         {
             return;
@@ -177,7 +225,7 @@ public static class Recipe_SurgeryFailPatch
         {
             infection = HediffMaker.MakeHediff(HediffDefOf.WoundInfection, patient, part.parent);
         }
-        else if (removeBodyPart.IsInstanceOfType(s))
+        else if (s is Recipe_RemoveBodyPart)
         {
             infection = HediffMaker.MakeHediff(HediffDefOf.WoundInfection, patient, part);
         }
